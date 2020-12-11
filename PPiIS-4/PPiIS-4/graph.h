@@ -69,7 +69,7 @@ public:
 
 	void add_vertex(const T& data);								//Addition
 	int find_vertex(const T& data);								//Search by value
-	void delete_vertex(T& data);								//Daletion by value
+	void delete_vertex(const T& data);								//Daletion by value
 
 	void add_edge(const int& from, const int& to);				//Addition by number
 	void add_edge(const T& from, const T& to);					//Addition by value
@@ -78,6 +78,7 @@ public:
 	void delete_edge(const int& from, const int& to);			//Deletion by number
 	void delete_edge(const T& from, const T& to);				//Deletion by value
 	void print_graph();											//Show graph
+	int get_vertexes_size();
 
 	bool is_empty(void);										//Check for content
 	void clear_graph(void);										//Clear graph
@@ -126,7 +127,7 @@ inline int graph<T>::find_vertex(const T& data)
 
 //Daletion by value
 template<typename T>
-inline void graph<T>::delete_vertex(T& data)
+inline void graph<T>::delete_vertex(const T& data)
 {
 	int vertex_num = find_vertex(data);
 	if (vertex_num != -1)
@@ -150,7 +151,7 @@ inline void graph<T>::add_edge(const int& from, const int& to)
 template<typename T>
 inline void graph<T>::add_edge(const T& from, const T& to)
 {
-	int first = find_vertex_data(from), sec = find_vertex_data(to);
+	int first = find_vertex(from), sec = find_vertex(to);
 	if (first != -1 && sec != -1 && find_edge(first, sec) == false)
 		_edges.push_back(edge(find_vertex(from), find_vertex(to)));
 
@@ -207,6 +208,12 @@ inline void graph<T>::print_graph()
 {
 	for (int i = 0; i < _edges.size() ; ++i)
 		cout << _vertexes[_edges[i].get_from()].get_data() << " ---> " << _vertexes[_edges[i].get_to()].get_data() << endl;
+}
+
+template<typename T>
+inline int graph<T>::get_vertexes_size()
+{
+	return _vertexes.size();
 }
 
 //Check for content
