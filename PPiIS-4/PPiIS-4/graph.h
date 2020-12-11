@@ -71,6 +71,7 @@ public:
 
 	void add_vertex(const T& data);								//Addition
 	int find_vertex(const T& data);								//Search by value
+	void delete_vertex(T& data);								//Daletion by value
 
 	void add_edge(const int& from, const int& to);				//Addition by number
 	void add_edge(const T& from, const T& to);					//Addition by value
@@ -104,6 +105,20 @@ inline int graph<T>::find_vertex(const T& data)
 		if (_vertexes[i].get_data() == data)
 			return i;
 	return -1;
+}
+
+//Daletion by value
+template<typename T>
+inline void graph<T>::delete_vertex(T& data)
+{
+	int vertex_num = find_vertex(data);
+	if (vertex_num != -1)
+	{
+		_vertexes.erase(_vertexes.begin() + vertex_num);
+		for (int i = 0; i < _edges.size(); ++i)
+			if (find_edge(i, vertex_num))
+				delete_edge(i, vertex_num);
+	}
 }
 
 //Addition by number
@@ -175,5 +190,3 @@ inline void graph<T>::print_graph()
 	for (int i = 0; i < _edges.size() : ++i)
 		cout << _vertexes[_edges[i].get_from()].get_data() << " ---> " << _vertexes[_edges[i].get_to()].get_data() << endl;
 }
-
-
