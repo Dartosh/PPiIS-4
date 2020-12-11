@@ -20,7 +20,7 @@ public:
 	{
 		return _data;
 	}
-		
+
 private:
 	T _data;
 };
@@ -81,7 +81,23 @@ public:
 
 	bool is_empty(void);										//Check for content
 	void clear_graph(void);										//Clear graph
+	
+	class vertex_iterator
+	{
+	public:
+		vertex_iterator(graph<T>& graph)
+		{
+			Iteration = &graph;
+			count = 0;
+		};
 
+		bool next();											//Next
+		bool prev();											//Prevous
+		void incident_vertexes();								//Show incident vertexes
+	private:
+		graph<T>* Iteration;
+		int count;
+	};
 private:
 	vector<vertex<T>> _vertexes;
 	vector<edge> _edges;
@@ -95,7 +111,7 @@ inline void graph<T>::add_vertex(const T& data)
 	if (find_vertex(data) == -1)
 		_vertexes.push_back(vertex<T>(data));
 	else
-		cout << "Math founded!" << endl;
+		cout << "Not founded!" << endl;
 }
 
 //Search by value
@@ -126,7 +142,7 @@ inline void graph<T>::delete_vertex(T& data)
 template<typename T>
 inline void graph<T>::add_edge(const int& from, const int& to)
 {
-	if (find_edge_data(from, to) == false)
+	if (find_edge(from, to) == false)
 		_edges.push_back(edge(from, to));
 }
 
@@ -184,14 +200,16 @@ inline void graph<T>::delete_edge(const T& from, const T& to)
 			_edges.erase(_edges.begin() + i);
 }
 
+
 //Show graph
 template<typename T>
 inline void graph<T>::print_graph()
 {
-	for (int i = 0; i < _edges.size() : ++i)
+	for (int i = 0; i < _edges.size() ; ++i)
 		cout << _vertexes[_edges[i].get_from()].get_data() << " ---> " << _vertexes[_edges[i].get_to()].get_data() << endl;
 }
 
+//Check for content
 template<typename T>
 inline bool graph<T>::is_empty(void)
 {
@@ -200,9 +218,53 @@ inline bool graph<T>::is_empty(void)
 	return false;
 }
 
+//Clear graph
 template<typename T>
 inline void graph<T>::clear_graph(void)
 {
 	_vertexes.clear();
 	_edges.clear();
+}
+
+//Next
+template<typename T>
+inline bool graph<T>::vertex_iterator::next()
+{
+	if (Iteration->_vertexes.size() <= count + 1)
+	{
+		return false;
+	}
+	count++;
+	return true;
+}
+
+//Previous
+template<typename T>
+inline bool graph<T>::vertex_iterator::prev()
+{
+	if (count == 0)
+	{
+		return false;
+	}
+	count--;
+	return true;
+}
+
+//Get incident vertexes
+template<typename T>
+inline void graph<T>::vertex_iterator::incident_vertexes()
+{
+	short count2 = 0;
+	for (int i = 0; i < Iteration->_vertexes.size(); ++i)
+	{
+		if (Iteration->find_edge(count, i) == true)
+		{
+			count2++;
+			cout << Iteration->_vertexes[count].get_data() << " ---> " << Iteration->_vertexes[i].get_data() << endl;
+		}
+	}
+	if (count2 == 0)
+	{
+		cout << "Not found!" << endl;
+	}
 }
