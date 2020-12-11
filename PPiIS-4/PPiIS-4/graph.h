@@ -71,11 +71,12 @@ public:
 
 	void delete_vertex(const T& data);
 	void add_vertex(const T& data);
-	bool find_vertex_data(const T& data);
+	int find_vertex_data(const T& data);
 
 	void add_edge(const int& from, const int& to);				//Addition by number
-	bool find_edge_data(const int& from, const int& to);		//Search for addition by number
-	int find_edge(const T& from, const T& to);					//Search for addition by value
+	void add_edge(const T& from, const T& to);					//Addition by value
+	bool find_edge(const int& from, const int& to);				//Search by number
+	int find_edge(const T& from, const T& to);					//Search by value
 
 
 private:
@@ -100,12 +101,12 @@ inline void graph<T>::add_vertex(const T& data)
 }
 
 template<typename T>
-inline bool graph<T>::find_vertex_data(const T& data)
+inline int graph<T>::find_vertex_data(const T& data)
 {
 	for (int i = 0; i < _vertexes.size(); ++i)
 		if (_vertexes[i].get_data() == data)
-			return true;
-	return false;
+			return i;
+	return -1;
 }
 
 
@@ -117,9 +118,18 @@ inline void graph<T>::add_edge(const int& from, const int& to)
 		_edges.push_back(edge(from, to));
 }
 
-//Search for addition by number
 template<typename T>
-inline bool graph<T>::find_edge_data(const int& from, const int& to)
+inline void graph<T>::add_edge(const T& from, const T& to)
+{
+	int first = find_vertex_data(from), sec = find_vertex_data(to);
+	if (first != -1 && sec != -1 && find_edge(first, sec) == false)
+
+}
+
+
+//Search by number
+template<typename T>
+inline bool graph<T>::find_edge(const int& from, const int& to)
 {
 	for (int i = 0; i < _edges.size(); ++i)
 		if (_edges[i].get_from() == from && _edges[i].get_to())
@@ -128,13 +138,14 @@ inline bool graph<T>::find_edge_data(const int& from, const int& to)
 }
 
 
-//Search for addition by value
+//Search by value
 template<typename T>
 inline int graph<T>::find_edge(const T& from, const T& to)
 {
 	for (int i = 0; i < _edges.size(); ++i)
 		if (_vertexes[_edges[i].get_from()].get_data() == from && _vertexes[_edges[i].get_to()].get_data() == to)
 			return i;
+	return -1;
 }
 
 
