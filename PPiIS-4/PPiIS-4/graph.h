@@ -38,8 +38,7 @@ class graph
 public:
 	graph() :
 	{	}
-	~graph() :
-	{	}
+
 
 	void add_vertex(const T& data);
 	bool find_vertex(const T& data);
@@ -51,14 +50,16 @@ private:
 
 
 template<typename T>
-inline void graph<T>::add_vertex(const T& data)
+void graph<T>::add_vertex(const T& data)
 {
-	if(find_vertex(data) == false)
-		_vertexes.push_back()
+	if (find_vertex(data) == false)
+		_vertexes.push_back(vertex<T>(data));
+	else
+		cout << "Math founded!" << endl;
 }
 
 template<typename T>
-inline bool graph<T>::find_vertex(const T& data)
+bool graph<T>::find_vertex(const T& data)
 {
 	for (int i = 0; i < _vertexes.size(); ++i)
 		if (_vertexes[i] == data)
