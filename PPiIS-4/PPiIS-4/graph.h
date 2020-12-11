@@ -17,7 +17,10 @@ public:
 	{	}
 
 	T get_data()
+	{
 		return _data;
+	}
+		
 private:
 	T _data;
 };
@@ -70,8 +73,9 @@ public:
 	void add_vertex(const T& data);
 	bool find_vertex_data(const T& data);
 
-	void add_edge(const int& from, const int& to);
-	bool find_edge(const T& from, const T& to);
+	void add_edge(const int& from, const int& to);				//Addition by number
+	bool find_edge_data(const int& from, const int& to);		//Search for addition by number
+	int find_edge(const T& from, const T& to);					//Search for addition by value
 
 
 private:
@@ -104,16 +108,33 @@ inline bool graph<T>::find_vertex_data(const T& data)
 	return false;
 }
 
+
+//Addition by number
 template<typename T>
 inline void graph<T>::add_edge(const int& from, const int& to)
 {
+	if (find_edge_data(from, to) == false)
+		_edges.push_back(edge(from, to));
 }
 
+//Search for addition by number
 template<typename T>
-inline bool graph<T>::find_edge(const T& from, const T& to)
+inline bool graph<T>::find_edge_data(const int& from, const int& to)
 {
-	for (int i =0; i < _edges.size(); ++i)
-		if (_vertexes[_edges[i]._first])
+	for (int i = 0; i < _edges.size(); ++i)
+		if (_edges[i].get_from() == from && _edges[i].get_to())
+			return true;
+	return false;
+}
+
+
+//Search for addition by value
+template<typename T>
+inline int graph<T>::find_edge(const T& from, const T& to)
+{
+	for (int i = 0; i < _edges.size(); ++i)
+		if (_vertexes[_edges[i].get_from()].get_data() == from && _vertexes[_edges[i].get_to()].get_data() == to)
+			return i;
 }
 
 
