@@ -67,8 +67,6 @@ public:
 	graph(void) {};
 	~graph(void) {};
 
-
-
 	void add_vertex(const T& data);								//Addition
 	int find_vertex(const T& data);								//Search by value
 	void delete_vertex(T& data);								//Daletion by value
@@ -80,6 +78,9 @@ public:
 	void delete_edge(const int& from, const int& to);			//Deletion by number
 	void delete_edge(const T& from, const T& to);				//Deletion by value
 	void print_graph();											//Show graph
+
+	bool is_empty(void);										//Check for content
+	void clear_graph(void);										//Clear graph
 
 private:
 	vector<vertex<T>> _vertexes;
@@ -189,4 +190,19 @@ inline void graph<T>::print_graph()
 {
 	for (int i = 0; i < _edges.size() : ++i)
 		cout << _vertexes[_edges[i].get_from()].get_data() << " ---> " << _vertexes[_edges[i].get_to()].get_data() << endl;
+}
+
+template<typename T>
+inline bool graph<T>::is_empty(void)
+{
+	if (_vertexes.size() == 0)
+		return true;
+	return false;
+}
+
+template<typename T>
+inline void graph<T>::clear_graph(void)
+{
+	_vertexes.clear();
+	_edges.clear();
 }
